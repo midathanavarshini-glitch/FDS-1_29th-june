@@ -9,19 +9,23 @@ df = pd.read_csv("Automobile.csv")
 # Identify Various Attribute Types
 # ==========================================
 
-# Numeric Attributes
-print("\nNumeric Attributes")
-numeric = df.select_dtypes(include=['int64', 'float64']).columns
-print(numeric)
+import pandas as pd
 
-# Nominal Attributes
-print("\nNominal Attributes")
-nominal = ['make', 'fuel-type', 'aspiration', 'body-style',
-           'drive-wheels', 'engine-location', 'engine-type',
-           'num-of-cylinders', 'fuel-system']
-print(nominal)
+# Load dataset
+df = pd.read_csv("automobile.csv")
 
-# Binary Attributes
-print("\nBinary Attributes")
-binary = ['fuel-type', 'aspiration', 'engine-location']
-print(binary)
+# Numeric attributes
+numeric = df.select_dtypes(include=['int64','float64']).columns.tolist()
+
+# Binary attributes (columns with exactly 2 unique values)
+binary = [col for col in df.columns if df[col].nunique() == 2]
+
+# Exclude binary from numeric
+numeric = [col for col in numeric if col not in binary]
+
+# Nominal attributes (object/category dtype)
+nominal = df.select_dtypes(include=['object','category']).columns.tolist()
+
+print("\nNumeric Attributes:", numeric)
+print("\nNominal Attributes:", nominal)
+print("\nBinary Attributes:", binary)
